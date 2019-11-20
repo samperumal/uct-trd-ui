@@ -7,7 +7,7 @@
 {% block content %}
   <div>
       {% for key in cache %}
-        <div>{{ key }} = {{ cache[key] }}</div>
+        <div>{{ key }} = <span id="{{ key }}">{{ cache[key] }}</span></div>
       {% endfor %}
   </div>
 {% endblock %}

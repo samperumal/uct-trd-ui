@@ -1,9 +1,10 @@
 import os
 import pydim
 
-from flask import Flask, g
+from flask import Flask, g, jsonify
 
 cache = {}
+updateState = None
 
 def create_app(test_config=None):
     # create and configure the app
@@ -12,7 +13,7 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
     )
-
+    
     if test_config is None:
         # load the instance config, if it exists, when not testing
         app.config.from_pyfile('config.py', silent=True)
@@ -31,10 +32,11 @@ def create_app(test_config=None):
         # Curry function to remember key against which to store updated value
         def update(value):
             from . import db
-    
+            
             cache[key] = value
             print("{0} = {1}".format(key, value))
-            
+            from flask_socketio import emit
+            if updateState != None: updateState(cache)
 
         return update
 
@@ -53,11 +55,6 @@ def create_app(test_config=None):
     def add_cache():
         g.cache = cache
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'    
-
     from . import db
     db.init_app(app)
 
@@ -65,3 +62,4 @@ def create_app(test_config=None):
     app.register_blueprint(root.bp)
 
     return app
+
