@@ -1,7 +1,9 @@
 import os
 import pydim
 
-from flask import Flask
+from flask import Flask, g
+
+cache = {}
 
 def create_app(test_config=None):
     # create and configure the app
@@ -25,11 +27,14 @@ def create_app(test_config=None):
         pass
 
     def updateGenericInt(key):
-        #cache[key] = None
+        cache[key] = None
         # Curry function to remember key against which to store updated value
         def update(value):
-            #cache[key] = value
+            from . import db
+    
+            cache[key] = value
             print("{0} = {1}".format(key, value))
+            
 
         return update
 
@@ -43,6 +48,10 @@ def create_app(test_config=None):
 
         # Register listeners
         pydim.dic_info_service("ztt_dimfed_server_trd-fee_00_2_0_STATE", updateGenericInt("state"))
+
+    @app.before_request
+    def add_cache():
+        g.cache = cache
 
     # a simple page that says hello
     @app.route('/hello')

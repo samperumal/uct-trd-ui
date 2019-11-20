@@ -5,5 +5,9 @@
 {% endblock %}
 
 {% block content %}
-  <div></div>
+  <div>
+      {% for key in cache %}
+        <div>{{ key }} = {{ cache[key] }}</div>
+      {% endfor %}
+  </div>
 {% endblock %}
