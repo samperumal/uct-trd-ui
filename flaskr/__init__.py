@@ -3,7 +3,9 @@ import pydim
 
 from flask import Flask, g, jsonify
 
-cache = {}
+cache = {
+    "state": None
+}
 updateState = None
 
 def create_app(test_config=None):
@@ -36,7 +38,12 @@ def create_app(test_config=None):
             cache[key] = value
             print("{0} = {1}".format(key, value))
             from flask_socketio import emit
-            if updateState != None: updateState(cache)
+            from . import actions
+            available_actions = actions.available_actions(cache["state"])
+            if updateState != None: updateState({
+                "services": cache,
+                "available_actions": available_actions
+            })
 
         return update
 

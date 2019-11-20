@@ -7,11 +7,9 @@ if __name__ == '__main__':
 
     @socketio.on('connect')
     def test_connect():
-        print("Client connected")
         emit('my response', {'data': 'Connected'})
 
     def update(cache):
-        print("Emitting")
         socketio.emit('state', cache)
 
     flaskr.updateState = update

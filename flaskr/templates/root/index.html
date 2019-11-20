@@ -2,15 +2,12 @@
 
 {% block head %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js" integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="text/javascript" charset="utf-8">
     var socket = io();
     socket.on('connect', function() {
         socket.emit('my event', {data: 'I\'m connected!'});
     });
-    socket.on('state', function (data) {
-      console.log(data)
-      document.getElementById('state').innerText = data.state
-    })
 </script>
 {% endblock %}
 
@@ -24,4 +21,47 @@
         <div>{{ key }} = <span id="{{ key }}">{{ cache[key] }}</span></div>
       {% endfor %}
   </div>
+  {% raw %}
+  <div id="app">
+      <h3>Services</h3>
+      <div>State: {{ services.state }}</div>
+      <h3>Actions</h3>
+      <div v-for="action in actions">
+          <a :href="action.href">{{ action.text }}</a>
+      </div>
+  </div>
+  {% endraw %}
+  <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            services: {
+                {% for key in cache %}
+                "{{key}}": "{{cache[key]}}",
+                {% endfor %}
+            },
+            available_actions: []
+        },
+        computed: {
+            actions() {
+                result = []
+                for (const action of this.available_actions) {
+                    result.push({
+                        href: "/actions/" + action,
+                        text: action
+                    })
+                }
+
+                return result
+            }
+        }
+    })    
+
+    socket.on('state', function (data) {
+      console.log(data)
+      document.getElementById('state').innerText = data.state
+      for (var key in data) 
+        app[key] = data[key]
+    })
+  </script>
 {% endblock %}
