@@ -58,7 +58,7 @@ def create_app(test_config=None):
     @app.route('/test')
     def test():
         import random
-        state = random.randrange(0, 10)
+        state = random.randrange(0, 100)
         updateGenericInt("state")(state)
         return str(state)
 
