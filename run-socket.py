@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     @socketio.on('connect')
     def test_connect():
-        emit('my response', {'data': 'Connected'})
+        socketio.emit('my response', {'data': 'Connected'})
 
     def update(cache):
         socketio.emit('state', cache)

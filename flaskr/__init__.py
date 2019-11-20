@@ -36,7 +36,7 @@ def create_app(test_config=None):
             from . import db
             
             cache[key] = value
-            print("{0} = {1}".format(key, value))
+            
             from flask_socketio import emit
             from . import actions
             available_actions = actions.available_actions(cache["state"])
