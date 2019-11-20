@@ -16,11 +16,6 @@
 {% endblock %}
 
 {% block content %}
-  <div>
-      {% for key in cache %}
-        <div>{{ key }} = <span id="{{ key }}">{{ cache[key] }}</span></div>
-      {% endfor %}
-  </div>
   {% raw %}
   <div id="app">
       <h3>Services</h3>
