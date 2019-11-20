@@ -55,6 +55,13 @@ def create_app(test_config=None):
     def add_cache():
         g.cache = cache
 
+    @app.route('/test')
+    def test():
+        import random
+        state = random.randrange(0, 10)
+        updateGenericInt("state")(state)
+        return str(state)
+
     from . import db
     db.init_app(app)
 
