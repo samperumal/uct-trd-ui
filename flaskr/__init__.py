@@ -3,9 +3,6 @@ import pydim
 
 from flask import Flask, g, jsonify
 
-cache = {
-    "state": None
-}
 updateState = None
 
 def create_app(test_config=None):
@@ -30,18 +27,19 @@ def create_app(test_config=None):
         pass
 
     def updateGenericInt(key):
-        cache[key] = None
         # Curry function to remember key against which to store updated value
         def update(value):
             from . import db
-            
-            cache[key] = value
+            from . import store
+
+            s = store.Store()
+            s.UpdateValue(key, value)
             
             from flask_socketio import emit
             from . import actions
-            available_actions = actions.available_actions(cache["state"])
+            available_actions = actions.available_actions(s.GetValue("state"))
             if updateState != None: updateState({
-                "services": cache,
+                "services": s.GetValues(),
                 "available_actions": available_actions
             })
 
@@ -57,10 +55,6 @@ def create_app(test_config=None):
 
         # Register listeners
         pydim.dic_info_service("ztt_dimfed_server_trd-fee_00_2_0_STATE", updateGenericInt("state"))
-
-    @app.before_request
-    def add_cache():
-        g.cache = cache
 
     @app.route('/test/<state>')
     def test(state):

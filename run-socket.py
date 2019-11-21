@@ -1,5 +1,6 @@
 import flaskr
 from flask_socketio import SocketIO, emit
+from flaskr import store
 
 if __name__ == '__main__':
     app = flaskr.create_app()
@@ -13,5 +14,6 @@ if __name__ == '__main__':
         socketio.emit('state', cache)
 
     flaskr.updateState = update
+    #store.Store().onUpdate = update
 
     socketio.run(app)
