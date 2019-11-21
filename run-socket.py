@@ -14,7 +14,12 @@ if __name__ == '__main__':
         socketio.emit('my response', {'data': 'Connected'})
         update()
 
-    flaskr.updateState = update
-    #store.Store().onUpdate = update
+    @socketio.on('run-action')
+    def run_action(action):
+        from flaskr import actions
+        actions.run_action(action)
+        update()
 
+    flaskr.updateState = update
+    
     socketio.run(app)

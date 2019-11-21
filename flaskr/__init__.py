@@ -60,12 +60,6 @@ def create_app(test_config=None):
         updateGenericInt("state")(state)
         return str(state)
 
-    @app.route('/actions/<action>')
-    def runAction(action):
-        from . import actions
-        actions.run_action(action)
-        return redirect(url_for('index.index'))
-
     from . import db
     db.init_app(app)
 

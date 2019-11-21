@@ -26,8 +26,8 @@
       <h3>Services</h3>
       <div>State: {{ services.state }}</div>
       <h3>Actions</h3>
-      <div v-for="action in actions">
-          <a :href="action.href">{{ action.text }}</a>
+      <div v-for="action in actions" v-bind:key="action.id">
+          <button @click="submit_action(action)">{{ action.text }}</button>
       </div>
   </div>
   {% endraw %}
@@ -43,12 +43,18 @@
                 result = []
                 for (const action of this.available_actions) {
                     result.push({
-                        href: "/actions/" + action,
+                        id: action,
                         text: action
                     })
                 }
 
                 return result
+            }
+        },
+        methods: {
+            submit_action: function(action) {
+                console.log(action)
+                socket.emit('run-action', action.id)
             }
         }
     })    
