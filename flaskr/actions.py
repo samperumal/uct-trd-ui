@@ -1,4 +1,3 @@
-#import pydim
 import subprocess
 
 def available_actions(state):
@@ -10,7 +9,13 @@ def available_actions(state):
 def run_action(action):
     print("Running action: {0}".format(action))
     
+    args = None
     if action == "INITIALIZE":
-        subprocess.run(["nginject", "10"])
+        args = ["nginject", "all", "10"]
     elif action == "RESET":
-        subprocess.run(["nginject", "90"])
+        args = ["nginject", "all", "90"]
+
+    if args != None:
+        result = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines= True)
+        
+        return (result.stdout)

@@ -14,7 +14,8 @@ if __name__ == '__main__':
 
     @socketio.on('run-action')
     def run_action(action):
-        actions.run_action(action)
+        stdout = actions.run_action(action)
+        socketio.emit('cmd-output', { 'stdout': stdout })
     
     pydim_wrapper.subscribe(update)
     

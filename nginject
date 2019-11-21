@@ -1,3 +1,3 @@
 #!/bin/bash
-echo $1
-ssh ucttrd "nginject all $1"
+#echo $1
+ssh ucttrd "nginject $1 $2"

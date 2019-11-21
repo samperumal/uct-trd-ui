@@ -19,10 +19,16 @@
   {% raw %}
   <div id="app">
       <h3>Services</h3>
-      <div>State: {{ services.state }}</div>
+      <div v-for="(value, name) in services">
+          {{ name }}: {{ value}}
+      </div>
       <h3>Actions</h3>
       <div v-for="action in actions" v-bind:key="action.id">
           <button @click="submit_action(action)">{{ action.text }}</button>
+      </div>
+      <h3>Action Output</h3>
+      <div>
+          <textarea>{{ action_output }}</textarea>
       </div>
   </div>
   {% endraw %}
@@ -31,7 +37,8 @@
         el: '#app',
         data: {
             services: {},
-            available_actions: []
+            available_actions: [],
+            action_output: null
         },
         computed: {
             actions() {
@@ -48,16 +55,20 @@
         },
         methods: {
             submit_action: function(action) {
-                console.log(action)
+                //console.log(action)
+                app["action_output"] = `Running action: ${action.id}`
                 socket.emit('run-action', action.id)
             }
         }
     })    
 
     socket.on('state', function (data) {
-      console.log(data)
       for (var key in data) 
         app[key] = data[key]
+    })
+
+    socket.on('cmd-output', function (data) {
+      app["action_output"] = data.stdout
     })
   </script>
 {% endblock %}
