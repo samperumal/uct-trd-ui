@@ -1,5 +1,4 @@
 import os
-import pydim
 
 from flask import Flask, g, jsonify, redirect, url_for
 
