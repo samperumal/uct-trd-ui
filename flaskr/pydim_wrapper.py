@@ -27,3 +27,6 @@ def subscribe(signal_update_delegate):
     subscribe_to_service("trdbox/RUN_NUMBER", "run-number", signal_update_delegate)
     subscribe_to_service("ztt_dimfed_server_trd-fee_00_2_0_STATE", "ztt-state", signal_update_delegate)
     subscribe_to_service("trd-fee_00_2_0_STATE", "state", signal_update_delegate)
+
+def ConfigureFero(tag):
+    pydim.dic_cmnd_service("ConfigureFero", ("trd-fee_00_2_0", tag))

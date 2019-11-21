@@ -35,6 +35,9 @@ export LD_LIBRARY_PATH=~/dim/linux:$LD_LIBRARY_PATH
 pip install -r requirements.txt
 ```
 
+PyDim is documented here: http://lhcbdoc.web.cern.ch/lhcbdoc/pydim/index.html
+
+
 ## Run local server
 
 ```bash

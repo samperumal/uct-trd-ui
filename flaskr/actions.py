@@ -1,4 +1,5 @@
 import subprocess
+from . import pydim_wrapper
 
 def available_actions(state):
     state = int(state)
@@ -16,6 +17,8 @@ def run_action(action):
         args = ["nginject", "all", "90"]
 
     if args != None:
-        result = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines= True)
+        #result = subprocess.run(args, stdout=subprocess.PIPE, universal_newlines= True)
         
-        return (result.stdout)
+        #return (result.stdout)
+        pydim_wrapper.ConfigureFero(args[2])
+        return "Requested ConfigureFero with tag {0}".format(args[2])

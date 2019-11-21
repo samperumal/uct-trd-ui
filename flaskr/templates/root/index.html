@@ -63,6 +63,8 @@
     socket.on('state', function (data) {
       for (var key in data) 
         app[key] = data[key]
+        
+      app["action_output"] = null
     })
 
     socket.on('cmd-output', function (data) {
