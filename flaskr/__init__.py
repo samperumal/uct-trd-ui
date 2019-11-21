@@ -26,32 +26,6 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    def updateGenericInt(key):
-        # Curry function to remember key against which to store updated value
-        def update(value):
-            from . import store
-
-            print("{0} = {1}".format(key, value))
-
-            s = store.Store()
-            s.UpdateValue(key, value)
-            
-            if updateState != None: 
-                updateState()
-
-        return update
-
-    # Register listeners before first request - only runs when first actual request hits server
-    # https://networklore.com/start-task-with-flask/
-    @app.before_first_request
-    def activate_job():
-        if not pydim.dis_get_dns_node():
-            print("No Dim DNS node found. Please set the environment variable DIM_DNS_NODE")
-            sys.exit(1)
-
-        # Register listeners
-        pydim.dic_info_service("ztt_dimfed_server_trd-fee_00_2_0_STATE", updateGenericInt("state"))
-
     @app.route('/test/<state>')
     def test(state):
         if state is None:
