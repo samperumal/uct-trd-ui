@@ -1,7 +1,7 @@
 import os
 import pydim
 
-from flask import Flask, g, jsonify
+from flask import Flask, g, jsonify, redirect, url_for
 
 updateState = None
 
@@ -29,19 +29,15 @@ def create_app(test_config=None):
     def updateGenericInt(key):
         # Curry function to remember key against which to store updated value
         def update(value):
-            from . import db
             from . import store
+
+            print("{0} = {1}".format(key, value))
 
             s = store.Store()
             s.UpdateValue(key, value)
             
-            from flask_socketio import emit
-            from . import actions
-            available_actions = actions.available_actions(s.GetValue("state"))
-            if updateState != None: updateState({
-                "services": s.GetValues(),
-                "available_actions": available_actions
-            })
+            if updateState != None: 
+                updateState()
 
         return update
 
@@ -63,6 +59,12 @@ def create_app(test_config=None):
             state = random.randrange(0, 100)
         updateGenericInt("state")(state)
         return str(state)
+
+    @app.route('/actions/<action>')
+    def runAction(action):
+        from . import actions
+        actions.run_action(action)
+        return redirect(url_for('index.index'))
 
     from . import db
     db.init_app(app)

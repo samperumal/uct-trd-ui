@@ -6,12 +6,13 @@ if __name__ == '__main__':
     app = flaskr.create_app()
     socketio = SocketIO(app)
 
+    def update():
+        socketio.emit('state', store.Store().GetState())
+
     @socketio.on('connect')
     def test_connect():
         socketio.emit('my response', {'data': 'Connected'})
-
-    def update(cache):
-        socketio.emit('state', cache)
+        update()
 
     flaskr.updateState = update
     #store.Store().onUpdate = update

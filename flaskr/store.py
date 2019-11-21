@@ -61,4 +61,13 @@ class Store():
     def GetValues(self):
         return self._cache
 
-        
+    def GetState(self):
+        from . import actions
+        available_actions = []
+        current_state = self.GetValue("state")
+        if current_state != None:
+            available_actions = actions.available_actions(current_state)
+        return {
+            "services": self.GetValues(),
+            "available_actions": available_actions
+        }   
