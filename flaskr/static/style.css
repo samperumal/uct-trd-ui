@@ -1,4 +1,18 @@
+header {
+    text-align: center;
+    margin-bottom: 0.75rem;
+}
+
+div.actions {
+    display: flex;
+    justify-content: center;
+}
+
+div.action {
+    padding: 0 0.75rem;
+}
+
 textarea {
-    min-width: 45em;
+    width: 100%;
     min-height: 10em;
 }

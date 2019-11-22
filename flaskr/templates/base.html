@@ -1,26 +1,17 @@
 <!doctype html>
 <html>
-<head>
-<title>{% block title %}{% endblock %} - UCT TRD</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<head>  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %} - UCT TRD</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 {% block head %}
 {% endblock %}
 </head>
-<body>
-<nav>
+<body class="layout-default">
+<nav style="text-align: center;" class="navbar has-shadow is-spaced">
   <h1>UCT TRD Control</h1>
-  <ul>
-
-  </ul>
 </nav>
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-</section>
+{% block content %}{% endblock %}
 </body>
 </html>
